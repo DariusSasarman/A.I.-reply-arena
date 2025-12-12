@@ -1,5 +1,0 @@
-[
-  {"name": "openai", "api_key": "apikeyopenai"},
-  {"name": "claude", "api_key": "apikeyclaude"},
-  {"name": "deepseek", "api_key": "apikeydeepseek"}
-]
