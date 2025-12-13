@@ -161,7 +161,7 @@ function App() {
           ))
         )}
       </div>
-      <div className="masterInputContainer" style={{ display: triggerSend > 0 ? 'none' : 'flex' }}>
+      <div className="masterInputContainer" style={{ display: (triggerSend > 0 && activeModels.length!=0) ? 'none' : 'flex' }}>
         <input
           className="masterInput"
           value={masterPrompt}
@@ -178,8 +178,39 @@ function App() {
         <div className="modalOverlay" onClick={handleCloseAddModal}>
           <div className="addModal" onClick={(e) => e.stopPropagation()}>
             <h2>Add Custom Chatbot Instance</h2>
+            <p>1. Pick provider</p>
+            <p>2. Pick variant</p>
+            <p>3. Fill in data required</p>
+            <p>4. Save</p>
               <div>
-                (WIP)
+                <div className="modalContentGrid">
+                  
+                  {/* Left Column: Icon/Category Selector */}
+                  <div className="modalLeftColumn">
+                    <div className="iconSelectorGrid">
+                      {icons.map((icon) => (
+                        <div 
+                          key={icon.name} 
+                          className="iconSelectItem"
+                          // Example: You would add an onClick handler here to select the icon
+                          // onClick={() => handleIconSelect(icon.path)}
+                        >
+                          <img src={icon.path} alt={icon.name} className="modelIconLarge" />
+                          <p>{icon.name}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Right Column: Model/Key Configuration (WIP) */}
+                  <div className="modalRightColumn">
+                    <h3>⚙️ Available Models :</h3>
+                    <div className="modalWIP">
+                      (WIP: This area will display model configuration fields based on the chosen category/icon.)
+                    </div>
+                  </div>
+                </div>
+                {/* END: New Two-Column Layout */}
               </div>
             <button className="closeModalButton" onClick={handleCloseAddModal}>
               Close
