@@ -15,29 +15,7 @@ const icons = Object.entries(iconModules).map(([path, module]) => {
 })
 
 // Temporary models for testing - will be replaced with user-selected models
-const TEMP_MODELS = [
-  {
-    id: 'temp-1',
-    name: 'Model Alpha',
-    icon: icons[0]?.path || '🤖',
-    url: 'https://example.com/alpha',
-    apiKey: 'temp-key-1'
-  },
-  {
-    id: 'temp-2',
-    name: 'Model Beta',
-    icon: icons[1]?.path || '🤖',
-    url: 'https://example.com/beta',
-    apiKey: 'temp-key-2'
-  },
-  {
-    id: 'temp-3',
-    name: 'Model Gamma',
-    icon: icons[2]?.path || '🤖',
-    url: 'https://example.com/gamma',
-    apiKey: 'temp-key-3'
-  }
-]
+
 
 function App() {
   const [hasConsented, setHasConsented] = useState(false)
@@ -122,9 +100,10 @@ function App() {
             </ul>
             <p><strong>Your data:</strong></p>
             <ul>
-              <li>• Stays in YOUR browser only</li>
               <li>• Is encrypted before storage</li>
-              <li>• Never leaves your device</li>
+              <li>• Always leaves local device encrypted</li>
+              <li>• Isn't stored on the server database</li>
+              <li>• Is decrypted only before LM api call</li>
               <li>• Can be cleared anytime</li>
             </ul>
             <p className="warningText">⚠️ We use browser localStorage. This is required for the app to function.</p>
@@ -145,7 +124,6 @@ function App() {
   if (!hasConsented) {
     return null
   }
-
   return (
     <div className="app">
       <div className="welcomeScreen" style={{ display: isStarted ? 'none' : 'flex' }}>
@@ -161,28 +139,35 @@ function App() {
       </div>
 
       <div className="chatGrid" style={{ display: isStarted ? 'flex' : 'none' }}>
-        {activeModels.map((model) => (
-          <ChatInstance
-            key={model.id}
-            modelName={model.name}
-            modelIcon={model.icon}
-            modelIdentifier={model.id}
-            modelUrl={model.url}
-            masterPrompt={masterPrompt}
-            encryptedApiKey={model.apiKey}
-            hideInputFooter={triggerSend > 0}
-            triggerSend={triggerSend}
-          />
-        ))}
+        {activeModels.length === 0 ? (
+          <div className="noModelsMessage">
+            <h2>Add your favourite models using the '+' button on the right of the master input</h2>
+          </div>
+        ) : (
+          activeModels.map((model) => (
+            <div className="Chats">
+            <ChatInstance
+              key={model.id}
+              modelName={model.name}
+              modelIcon={model.icon}
+              modelIdentifier={model.id}
+              modelUrl={model.url}
+              masterPrompt={masterPrompt}
+              encryptedApiKey={model.apiKey}
+              hideInputFooter={triggerSend > 0}
+              triggerSend={triggerSend}
+            />
+            </div>
+          ))
+        )}
       </div>
-
       <div className="masterInputContainer" style={{ display: triggerSend > 0 ? 'none' : 'flex' }}>
         <input
           className="masterInput"
           value={masterPrompt}
           onChange={handleMasterPromptChange}
           onKeyDown={handleKeyPress}
-          placeholder="Type your message..."
+          placeholder="This is the master input. Type your message..."
         />
         <button className="masterAddButton" onClick={handleAddModel} title="Add custom model">
           +
@@ -193,9 +178,9 @@ function App() {
         <div className="modalOverlay" onClick={handleCloseAddModal}>
           <div className="addModal" onClick={(e) => e.stopPropagation()}>
             <h2>Add Custom Chatbot Instance</h2>
-            <p className="modalPlaceholder">
-              Custom model configuration will go here...
-            </p>
+              <div>
+                (WIP)
+              </div>
             <button className="closeModalButton" onClick={handleCloseAddModal}>
               Close
             </button>
