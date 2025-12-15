@@ -7,6 +7,7 @@ function ChatInstance({
   modelIdentifier = "model-1",
   modelUrl = "#",
   masterPrompt = "",
+  provider = "",
   encryptedApiKey = "",
   hideInputFooter = false,
   triggerSend = 0,
@@ -19,6 +20,25 @@ function ChatInstance({
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
+    useEffect(() => {
+    const fetchApiKey = async () => {
+      try {
+        const res = await fetch('/api/keys/get', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ provider })
+        })
+        if (res.ok) {
+          const data = await res.json()
+          if (data.apiKey) setEncryptedApiKey(data.apiKey)
+        }
+      } catch (err) {
+        console.error("Failed to load API key:", err)
+      }
+    }
+    fetchApiKey()
+  }, [provider])
+
   // Update prompt when masterPrompt changes
   useEffect(() => {
     setUserPrompt(masterPrompt)
@@ -26,47 +46,40 @@ function ChatInstance({
 
   // Trigger send when triggerSend changes
   useEffect(() => {
-    if (triggerSend > 0) {
-      handleSend()
-    }
+    if (triggerSend > 0) handleSend()
   }, [triggerSend])
 
   const handleSend = async () => {
     if (!userPrompt.trim()) return
-    
+    if (!encryptedApiKey) {
+      setAiResponse("API key missing. Please add it first.")
+      return
+    }
+
     setIsLoading(true)
     setError(null)
-    
+
     try {
-      // POST to server with model identifier, prompt, and encrypted API key
       const response = await fetch('/api/process', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          modelIdentifier: modelIdentifier,
+          modelIdentifier,
           prompt: userPrompt,
-          encryptedApiKey: encryptedApiKey
+          encryptedApiKey
         })
       })
-      
+
+      const data = await response.json()
       if (!response.ok) {
-        setAiResponse("No reply recieved.")
+        setAiResponse(data.error || "No reply received.")
+      } else {
+        setAiResponse(data.reply || "No response from AI")
       }
-      else
-      {
-        const data = await response.json()
-        const replyText = data.reply || data.response || "No response from AI"
-        // Set AI response
-        setAiResponse(replyText)
-      }
+
     } catch (err) {
       setError(err.message || "Failed to get AI response")
       setAiResponse(`Error: ${err.message || "Could not reach server"}`)
-      setIsLoading(false)
-      setIsInputHidden(true)
-      setShowButtons(true)
     } finally {
       setIsLoading(false)
       setIsInputHidden(true)

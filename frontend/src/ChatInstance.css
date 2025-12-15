@@ -33,6 +33,8 @@
     aspect-ratio: 1/1;
     min-width: 3rem;
     min-height: 3rem;
+    max-width: 3rem;
+    max-height: 3rem;
     border: none;
     border-radius: 50%;
     font-size: 1.5rem;
@@ -40,6 +42,15 @@
     padding: 4px 8px;
     transition: transform 0.2s ease;
 }
+
+.chatbotIcon img {
+    width: 70%;   /* Adjust as needed */
+    height: 70%;  /* Maintain aspect ratio */
+    object-fit: contain;
+    display: block;
+    margin: auto;
+}
+
 
 .chatbotIcon:hover {
     transform: scale(1.1);

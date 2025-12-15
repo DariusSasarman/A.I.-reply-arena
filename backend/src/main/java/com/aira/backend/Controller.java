@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 public class Controller {
     
     @Value("${app.encryption.key:YourSecretKey12345}")
@@ -52,7 +52,7 @@ public class Controller {
                                "claude-3-opus-20240229", "claude-3-sonnet-20240229", "claude-3-haiku-20240307");
                 break;
             case "cohere":
-                models = List.of("command-r-plus", "command-r", "command", "command-light");
+                models = List.of("command-a-03-2025", "command-r7b-12-2024", "command-a-translate-08-2025", "command-a-reasoning-08-2025", "command-a-vision-07-2025", "command-r-08-2024", "command-r-plus-08-2024", "command-r-03-2024");
                 break;
             case "copilot":
                 models = List.of("gpt-4-turbo", "gpt-4");
