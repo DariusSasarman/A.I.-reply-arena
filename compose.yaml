@@ -47,7 +47,7 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     ports:
-      - "3000:80"  # Nginx serves on 80 inside container
+      - '3000:80'  # Nginx serves on 80 inside container
     depends_on:
       - backend
     networks:
