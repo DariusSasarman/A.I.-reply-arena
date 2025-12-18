@@ -197,8 +197,8 @@ public class Controller {
     
     @PostMapping("/api/select-winner")
     public ResponseEntity<Map<String, Object>> selectWinner(
-            @RequestBody Map<String, String> body,
-            HttpServletRequest request) {
+        @RequestBody Map<String, String> body,
+        HttpServletRequest request) {
         try {
             String modelIdentifier = body.get("modelIdentifier");
             String prompt = body.get("prompt");
@@ -213,8 +213,71 @@ public class Controller {
             
             winnerRepository.save(winner);
             
-            return ResponseEntity.ok(Map.of("success", true, "message", "Winner recorded successfully"));
-            
+            switch(modelIdentifier.toLowerCase()) {
+                case "openai-gpt-4o":
+                case "openai-gpt-4o-mini":
+                case "openai-gpt-4-turbo":
+                case "openai-gpt-4":
+                case "openai-gpt-3.5-turbo":
+                case "openai-gpt-3.5-turbo-16k":
+                // Increment usage count or any other metric if needed
+                    break;
+                case "claude-claude-sonnet-4-20250514":
+                case "claude-claude-opus-4-20250514":
+                case "claude-claude-3-5-sonnet-20241022":
+                case "claude-claude-3-opus-20240229":
+                case "claude-claude-3-sonnet-20240229":
+                case "claude-claude-3-haiku-20240307":
+                    // Increment usage count or any other metric if needed
+                    break;
+                case "cohere-command-a-03-2025":
+                case "cohere-command-r7b-12-2024":
+                case "cohere-command-a-translate-08-2025":
+                case "cohere-command-a-reasoning-08-2025":
+                case "cohere-command-a-vision-07-2025":
+                case "cohere-command-r-08-2024":
+                case "cohere-command-r-plus-08-2024":
+                case "cohere-command-r-03-2024":
+                    // Increment usage count or any other metric if needed
+                    break;
+                case "copilot-gpt-4-turbo":
+                case "copilot-gpt-4":
+                    // Increment usage count or any other metric if needed
+                    break;
+                // Add other providers and models as needed
+                case "deepseek-deepseek-chat":
+                case "deepseek-deepseek-coder":
+                    break;
+                case "gemini-gemini-2.0-flash-exp":
+                case "gemini-gemini-1.5-pro":
+                case "gemini-gemini-1.5-flash":
+                case "gemini-gemini-1.0-pro":
+                    break;
+                case "grok-grok-beta":
+                case "grok-grok-vision-beta":
+                    break;
+                case "llama-llama-3.3-70b-instruct":
+                case "llama-llama-3.1-405b-instruct":
+                case "llama-llama-3.1-70b-instruct":
+                case "llama-llama-3.1-8b-instruct":
+                case "llama-llama-3-70b-instruct":
+                case "llama-llama-3-8b-instruct":
+                    break;
+                case "mistral-mistral-large-latest":
+                case "mistral-mistral-medium-latest":
+                case "mistral-mistral-small-latest":
+                case "mistral-mixtral-8x7b-instruct":
+                case "mistral-mixtral-8x22b-instruct":
+                    break;
+                case "qwen-qwen-turbo":
+                case "qwen-qwen-plus":
+                case "qwen-qwen-max":
+                case "qwen-qwen2.5-72b-instruct":
+                case "qwen-qwen2.5-7b-instruct":
+                    break;
+                default:
+                    break;
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "Failed to record winner"));

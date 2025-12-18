@@ -75,6 +75,33 @@ const fetchProviderApiKey = async (provider) => {
   }
 };
 
+const getProviderURL = (providerName) => {
+  switch (providerName.toLowerCase()) {
+    case "openai"://works
+      return "https://chatgpt.com/c/?prompt=";
+    case "claude":
+      return "https://claude.ai/new?q=";
+    case "cohere":
+      return "https://dashboard.cohere.com/playground/chat?q=";
+    case "copilot":
+      return "https://copilot.microsoft.com/?q=";
+    case "deepseek":
+      return "https://chat.deepseek.com/?q=";
+    case "gemini"://works
+      return "https://aistudio.google.com/prompts/new_chat?prompt=";
+    case "grok"://works
+      return "https://grok.com/?q=";
+    case "llama"://will not work
+      return "https://llama.online/chat#";
+    case "mistral":/// can't check - don't want to give them info
+      return "https://console.mistral.ai/build/playground?from=agents#";
+    case "qwen"://works
+      return "https://chat.qwen.ai/?text=";
+    default:
+      throw new Error(`Unsupported provider: ${providerName}`);
+  }
+};
+
 function App() {
   const [hasConsented, setHasConsented] = useState(false)
   const [showConsentModal, setShowConsentModal] = useState(false)
@@ -243,7 +270,7 @@ function App() {
       name: modelName,
       provider: selectedProvider,
       icon: icons.find(i => i.name === selectedProvider)?.path || '',
-      url: `/api/chat/${selectedProvider}`,
+      url: getProviderURL(selectedProvider),
       encryptedApiKey: apiKeyInput // We set this immediately so the user can chat without reloading
     }));
 
