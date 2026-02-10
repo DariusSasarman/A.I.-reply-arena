@@ -36,10 +36,4 @@ A.I.-reply-arena/
   4. .vscode/ # VSCode settings
   5. OLD.zip # Previous project versions
 
-## How I made it:
-
-Straight up vibe coding. 
-
-No thoughts, other than design, went into this project and it turned out functional - Pure "prompt engineering"
-
-Can't blame someone for having fun, can you?
+<sub> Disclaimer! The current state of this project is "vibe-coded", as in "requested the lego pieces and put it all together" vibe-coding. I had this ideea and I wanted it implemented asap.</sub>
